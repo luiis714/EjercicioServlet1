@@ -26,7 +26,6 @@ public class MostrarDepartamentos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private Session session;
-	private Transaction tx;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,7 +40,6 @@ public class MostrarDepartamentos extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		session = HibernateUtil.getSessionFactory().openSession();
-		tx = session.beginTransaction();
 	}
 
 	/**
@@ -53,14 +51,13 @@ public class MostrarDepartamentos extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		
-		out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Departamentos Sevlet</title>");
+		imprimirDepartamentos(out, departamentos);
 		
-		
-		
+		out.close();
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
+
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -68,6 +65,24 @@ public class MostrarDepartamentos extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private void imprimirDepartamentos(PrintWriter out, List<Departamento> departamentos) {
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<title>Departamentos Sevlet</title>");
+		out.println("</head>");
+		out.println("<body>");
+		out.println("<h1>TABLA DEPARTAMENTOS</h1>");
+		for(int i = 0; i < departamentos.size(); i++) {
+			Departamento d = departamentos.get(i);
+			
+			out.println("<div>" + d.toString() + "</div>");
+		}
+			
+		out.println("</body>");
+		out.println("</html>");
+		
 	}
 
 }
