@@ -67,7 +67,7 @@ public class MostrarEmpleados extends HttpServlet {
 	private void imprimirEmpleados(PrintWriter out, List<Empleado> empleados) {
 		out.println("<html>");
 		out.println("<head>");
-		out.println("<title>Departamentos Sevlet</title>");
+		out.println("<title>Empleados Sevlet</title>");
 		out.println("</head>");
 		out.println("<body>");
 		out.println("<h1>TABLA EMPLEADOS</h1>");
