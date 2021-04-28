@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import datamodel.dao.EmpleadoDAO;
@@ -25,6 +27,8 @@ import datamodel.util.HibernateUtil;
 public class MostrarEmpleados extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	private static Logger logger = LogManager.getLogger(MostrarDatos.class);
+	
 	private Session session;
 	
     /**
@@ -40,6 +44,7 @@ public class MostrarEmpleados extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		session = HibernateUtil.getSessionFactory().openSession();
+		logger.info("Creo la sesión. Conexión con la BBDD. Desde MostraEmpleados");
 	}
 
 	/**
@@ -47,13 +52,16 @@ public class MostrarEmpleados extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Empleado> empleados = EmpleadoDAO.getAllEmpleados(session);
+		logger.info("Recupero la lista de empleados");
 		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		
+		logger.info("Muestro la página que muestra la lista");
 		imprimirEmpleados(out, empleados);
 		
 		out.close();
+		logger.info("Acaba la función del Servlet MuestraEmpleados");
 	}
 
 	/**
@@ -87,6 +95,8 @@ public class MostrarEmpleados extends HttpServlet {
 		//Muestro los datos de tabla EMPLEADOS
 		for(int i = 0; i < empleados.size(); i++) {
 			Empleado e = empleados.get(i);
+			logger.info("Muestra empleado: " + e.toString());
+			
 			out.println("<tr>");
 			out.println("<td>" + e.getCodigoEmpleado() +"</td>");
 			out.println("<td>" + e.getNombreEmpleado() + "</td>");
@@ -104,5 +114,4 @@ public class MostrarEmpleados extends HttpServlet {
 		out.println("</body>");
 		out.println("</html>");
 	}
-
 }

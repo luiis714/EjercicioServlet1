@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -25,6 +27,8 @@ import datamodel.util.HibernateUtil;
 public class MostrarDepartamentos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
+	private static Logger logger = LogManager.getLogger(MostrarDatos.class);
+	
 	private Session session;
 	
     /**
@@ -40,6 +44,7 @@ public class MostrarDepartamentos extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		session = HibernateUtil.getSessionFactory().openSession();
+		logger.info("Creo la sesión. Conexión con la BBDD. Desde MostraDepartamentos");
 	}
 
 	/**
@@ -47,14 +52,16 @@ public class MostrarDepartamentos extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Departamento> departamentos = DepartamentoDAO.getAllDepartamentos(session);
+		logger.info("Recupero la lista de departamentos");
 		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		
+		logger.info("Muestro la página que muestra la lista");
 		imprimirDepartamentos(out, departamentos);
 		
 		out.close();
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		logger.info("Acaba la función del Servlet MuestraDepartamentos");
 	}
 
 
@@ -83,6 +90,7 @@ public class MostrarDepartamentos extends HttpServlet {
 		//Muestro los datos de tabla departamentos
 		for(int i = 0; i < departamentos.size(); i++) {
 			Departamento d = departamentos.get(i);
+			logger.info("Muestra departamento: " + d.toString());
 			
 			out.println("<tr>");
 			out.println("<td>" + d.getCodigoDepartamento() + "</td>");
@@ -93,7 +101,5 @@ public class MostrarDepartamentos extends HttpServlet {
 		out.println("</table>");
 		out.println("</body>");
 		out.println("</html>");
-		
 	}
-
 }
