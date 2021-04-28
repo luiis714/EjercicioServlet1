@@ -1,6 +1,7 @@
 datamodel\util\HibernateUtil.class
 servlet\MostrarDepartamentos.class
 datamodel\entities\Empleado.class
+servlet\MostrarEmpleados.class
 datamodel\entities\Departamento.class
 datamodel\dao\EmpleadoDAO.class
 datamodel\dao\DepartamentoDAO.class
